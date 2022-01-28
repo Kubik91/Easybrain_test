@@ -266,7 +266,7 @@ class EqualDataFrames:
     def equal_columns_types(self) -> bool:
         """Equals columns types"""
         if dict(self.df1.dtypes) == dict(self.df2.dtypes):
-            if len(self.df1):
+            if len(self.df1) and len(self.df2):
                 df_types1: Dict[str, str] = dict(self.df1.dtypes)
                 df_types2: Dict[str, str] = dict(self.df1.dtypes)
                 types: Dict[str, Dict] = {"df1": df_types1, "df2": df_types2}
@@ -291,8 +291,6 @@ class EqualDataFrames:
                 if types["df1"] == types["df2"]:
                     self.types = types
                     return True
-                return False
-            return dict(self.df1.dtypes) == dict(self.df2.dtypes)
         return False
 
     @property
@@ -334,7 +332,7 @@ class PreparationDataFramesCmp:
                 self.df = pd.read_pickle(self.df_path)
             except (FileNotFoundError, OSError, UnpicklingError):
                 return False
-        return True
+        return bool(len(self.df))
 
     def get_types(self) -> Dict[str, object]:
         """Equals columns types"""
